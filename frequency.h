@@ -5,10 +5,16 @@
 //  Created by Fabian Gazzia on 14.10.23.
 //
 
-#ifndef Header_h
-#define Header_h
+#ifndef frequency_h
+#define frequency_h
+
+#define ASCII_SIZE 128
 
 #include <stdio.h>
 #include <stdlib.h> // for EXIT_ constants
 
-#endif /* Header_h */
+FILE* open_file(const char*);
+void count_char_frequency(FILE*, int*);
+int calculate_char_count(const int*);
+
+#endif /* frequency_h */

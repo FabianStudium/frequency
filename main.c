@@ -6,6 +6,7 @@
 //
 
 #include "main.h"
+#include "frequency.h"
 
 int main(const int argc, const char * argv[]) {
     
@@ -14,9 +15,8 @@ int main(const int argc, const char * argv[]) {
         letters[file_stream.length][frequencyInt][frequency%]
     */
     
-    /*  input validierung 
-        * 1 arg
-        * file exists
+    /*  
+        input validierung 
     */
     check_argument_count(argc);
     
@@ -41,6 +41,17 @@ int main(const int argc, const char * argv[]) {
                 for j in string:
                     string[j] == stream[i] ? string[j][1]++ : string[j+1] = stream[i];
     */
+
+    int char_frequency[ASCII_SIZE] = {0}; // declares a 128 long array and init. each value with 0
+        // the ascii value of a character is used as the position of the array
+   
+    FILE* file = open_file(filename);
+
+    count_char_frequency(file, char_frequency);
+    
+    fclose(file);
+
+    int distinct_char_count = calculate_char_count(char_frequency);
 
     /*  sort letter array by frequency
     */
