@@ -9,6 +9,7 @@
 
 FILE* open_file(const char* filename) {
     FILE* file = fopen(filename, "r");
+
     if(file == NULL) {
         fprintf(stderr, "File could not be opened.\n");
         exit(EXIT_FAILURE);
@@ -71,7 +72,6 @@ char** store_char_frequency(const int char_count, const int* ascii_arr) {
     return freq_arr;
 }
 
-// Function to free allocated memory for the 2D array
 void free_memory(const char** arr, const int distinctCharCount) {
     for (int i = 0; i < distinctCharCount; i++) {
         free(arr[i]);
@@ -94,7 +94,6 @@ char** sort_arr(const char** arr, const int size) {
             }
         }
 
-        // If no two elements were swapped by inner loop, then break
         if (swapped == 0) {
             break;
         }
