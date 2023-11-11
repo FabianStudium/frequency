@@ -16,5 +16,6 @@ int check_argument_count(const int);
 const int file_exists(const char*);
 int parse_input_failed(char*, const char*, const size_t);
 int path_is_not_safe(const char*);
+void print_char_frequency(const char**, const int);
 
 #endif /* main_h */

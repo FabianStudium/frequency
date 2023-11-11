@@ -59,6 +59,9 @@ int main(const int argc, const char * argv[]) {
     */
 
     /*   print result   */
+    print_char_frequency(char_frequency_arr, distinct_char_count);
+
+    free_memory(char_frequency_arr, distinct_char_count);
 
     return EXIT_SUCCESS;
 }
@@ -123,4 +126,11 @@ int path_is_not_safe(const char* input) {
         }
     }
     return 0; // Safe path
+}
+
+void print_char_frequency(const char** arr, const int size_arr) {
+    for (int i = 0; i < size_arr; i++) {
+        int freq = (int)arr[i][1];
+        fprintf(stdout, "%c \t%d \t%2.f%% \n", arr[i][0], arr[i][1], (float)freq/size_arr*100);
+    }
 }
