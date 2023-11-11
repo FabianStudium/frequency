@@ -16,5 +16,5 @@
 FILE* open_file(const char*);
 void count_char_frequency(FILE*, int*);
 int calculate_char_count(const int*);
-
+char** store_char_frequency_in_array(const int, const int*);
 #endif /* frequency_h */
