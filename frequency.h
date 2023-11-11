@@ -14,9 +14,15 @@
 #include <stdlib.h> // for EXIT_ constants
 
 FILE* open_file(const char*);
-void count_char_frequency(FILE*, int*);
+
 int calculate_char_count(const int*);
-char** store_char_frequency(const int, const int*);
+int calculate_distinct_char_count(const int*);
+
+void count_char_frequency(FILE*, int*);
 void free_memory(const char**, const int);
+void print_char_frequency(const char**, const int, const int);
+
+char** sort_arr(const char**, const int);
+char** store_char_frequency(const int, const int*);
 
 #endif /* frequency_h */

@@ -17,7 +17,7 @@ FILE* open_file(const char* filename) {
     return file;
 }
 
-void count_char_frequency(FILE* file, int* frequency) {
+void count_char_frequency(const FILE* file, int* frequency) {
     char c;
 
     while ((c = fgetc(file)) != EOF) {
@@ -28,6 +28,18 @@ void count_char_frequency(FILE* file, int* frequency) {
 }
 
 int calculate_char_count(const int* frequency) {
+    int count = 0;
+
+    for (int i = 0; i < ASCII_SIZE; i++) {
+        if (frequency[i] > 0) {
+            count += frequency[i];
+        }
+    }
+    
+    return count;
+}
+
+int calculate_distinct_char_count(const int* frequency) {
     int count = 0;
 
     for (int i = 0; i < ASCII_SIZE; i++) {
@@ -65,4 +77,33 @@ void free_memory(const char** arr, const int distinctCharCount) {
         free(arr[i]);
     }
     free(arr);
+}
+
+char** sort_arr(const char** arr, const int size) {
+    int swapped;
+    char* temp;
+
+    for (int i = 0; i < size - 1; i++) {
+        swapped = 0;
+        for (int j = 0; j < size - i - 1; j++) {
+            if (arr[j][1] < arr[j + 1][1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = 1;
+            }
+        }
+
+        // If no two elements were swapped by inner loop, then break
+        if (swapped == 0) {
+            break;
+        }
+    }
+}
+
+void print_char_frequency(const char** arr, const int size_arr, const int char_count) {
+    for (int i = 0; i < size_arr; i++) {
+        int freq = (int)arr[i][1];
+        fprintf(stdout, "%c \t%d \t%.2f%% \n", arr[i][0], arr[i][1], (float)freq/char_count*100);
+    }
 }

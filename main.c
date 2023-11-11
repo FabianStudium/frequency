@@ -9,15 +9,7 @@
 #include "frequency.h"
 
 int main(const int argc, const char * argv[]) {
-    
-    /*  variables (sizes)
-        file_stream[]
-        letters[file_stream.length][frequencyInt][frequency%]
-    */
-    
-    /*  
-        input validierung 
-    */
+    /*   input validierung   */
     check_argument_count(argc);
     
     if(path_is_not_safe(argv[1])) {
@@ -34,39 +26,42 @@ int main(const int argc, const char * argv[]) {
         return EXIT_FAILURE;
     }
 
-    /*  file operations
-        * read content per letter
-        * write from stream to 2d array
-            - for i in stream: 
-                for j in string:
-                    string[j] == stream[i] ? string[j][1]++ : string[j+1] = stream[i];
-    */
-
     int char_frequency_ascii[ASCII_SIZE] = {0}; // declares a 128 long array and init. each value with 0
         // the ascii value of a character is used as the position of the array
    
     FILE* file = open_file(filename);
 
+    /*      i -> character as integer
+            array[i] -> frequency as integer
+    */
     count_char_frequency(file, char_frequency_ascii);
     
     fclose(file);
 
-    int distinct_char_count = calculate_char_count(char_frequency_ascii);
+    /*   calculates the total amount of characters {a,...,z,A,...,Z}   */
+    int char_count = calculate_char_count(char_frequency_ascii);
+    /*   calculates the amount of distinct characters {a,...,z,A,...,Z}   */
+    int distinct_char_count = calculate_distinct_char_count(char_frequency_ascii);
 
+    /*   creates a 2d array
+            array[i] -> character
+            array[i] -> frequency as integer
+    */
     char** char_frequency_arr = store_char_frequency(distinct_char_count, char_frequency_ascii);
 
-    /*  sort letter array by frequency
-    */
+    /*   sort letter array by frequency | bubble sort   */
+   char** char_frequency_arr_sorted = sort_arr(char_frequency_arr, distinct_char_count);
 
     /*   print result   */
-    print_char_frequency(char_frequency_arr, distinct_char_count);
+    print_char_frequency(char_frequency_arr, distinct_char_count, char_count); // calculates percentage dynamically .. not pretty
 
+    /*   memory handling   */
     free_memory(char_frequency_arr, distinct_char_count);
 
     return EXIT_SUCCESS;
 }
 
-int check_argument_count(const int argc) {
+const int check_argument_count(const int argc) {
     if(argc != 2) {
         fprintf(stderr, "Please provide a filename.\n\nUsage: ./frequency <path>/<filename>.<extenstion>.");
         return 0;
@@ -88,7 +83,7 @@ const int file_exists(const char* filename) {
     return 1; // Exists
 }
 
-int parse_input_failed(char* dst, const char* src, const size_t dst_size) {
+const int parse_input_failed(char* dst, const char* src, const size_t dst_size) {
     if (src == NULL || dst == NULL) {
         return 1; // Invalid input
     }
@@ -106,7 +101,7 @@ int parse_input_failed(char* dst, const char* src, const size_t dst_size) {
 
 /* Source: GPT*/
 /* Input sanitisation .. check if user provides any unsafe characters that could lead to vulnerabilities like path traversal, file access, etc.*/
-int path_is_not_safe(const char* input) {
+const int path_is_not_safe(const char* input) {
     const char* unsafe_char[] = {
         "..", "/", "\\", 
         "%2e%2e%2f", "%2e%2e%5c", // url encoded '../' '..\'
@@ -126,11 +121,4 @@ int path_is_not_safe(const char* input) {
         }
     }
     return 0; // Safe path
-}
-
-void print_char_frequency(const char** arr, const int size_arr) {
-    for (int i = 0; i < size_arr; i++) {
-        int freq = (int)arr[i][1];
-        fprintf(stdout, "%c \t%d \t%2.f%% \n", arr[i][0], arr[i][1], (float)freq/size_arr*100);
-    }
 }
